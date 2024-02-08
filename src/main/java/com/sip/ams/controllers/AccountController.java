@@ -25,7 +25,7 @@ import com.sip.ams.services.AccountService;
 
 public class AccountController {
 
-
+	@Autowired
 	private final AccountService accountService;
 	
 	@Autowired

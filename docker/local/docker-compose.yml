@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  my-mysql-ams:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: toto
+      MYSQL_DATABASE: ams
+      MYSQL_USER: toto
+      MYSQL_PASSWORD: toto
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./dbams.sql:/docker-entrypoint-initdb.d/dbams.sql
+    networks:
+      - web
+  spring-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: spring-app-container
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://my-mysql-ams:3306/ams?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_USERNAME: toto
+      SPRING_DATASOURCE_PASSWORD: toto
+    ports:
+      - "8081:8081"
+    depends_on:
+      - my-mysql-ams
+    networks:
+      - web
+
+volumes:
+  mysql-data:
+
+networks:
+  web:
