@@ -10,7 +10,6 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    sh 'mvn clean package'
                     sh "docker build -t ${REGISTRY_URL}/${DOCKER_IMAGE_NAME} ."
                 }
             }
